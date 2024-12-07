@@ -221,37 +221,39 @@ paths:
                                 $ref: '#/components/schemas/PlayersPos'
 components:
     schemas:
+        PlayerPos:
+            type: object
+            properties:
+                Name:
+                    type: string
+                    example: Parl4224h
+                TeamId:
+                    type: integer
+                    format: int32
+                    example: 0
+                X:
+                    type: number
+                    format: double
+                    example: 9170.8956521356595
+                Y:
+                    type: number
+                    format: double
+                    example: 1080.3925747653223
+                Z:
+                    type: number
+                    format: double
+                    example: 3920.3188734604901
+                Yaw:
+                    type: number
+                    format: double
+                    example: -34.825001001358061
         PlayersPos:
             type: object
             properties:
                 Players:
                     type: array
                     items:
-                        type: object
-                        properties:
-                            Name:
-                                type: string
-                                example: Parl4224h
-                            TeamId:
-                                type: integer
-                                format: int32
-                                example: 0
-                            X:
-                                type: number
-                                format: double
-                                example: 9170.8956521356595
-                            Y:
-                                type: number
-                                format: double
-                                example: 1080.3925747653223
-                            Z:
-                                type: number
-                                format: double
-                                example: 3920.3188734604901
-                            Yaw:
-                                type: number
-                                format: double
-                                example: -34.825001001358061
+                        $ref: '#/components/schemas/PlayerPos'
                 CameraX:
                     type: number
                     format: double
