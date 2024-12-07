@@ -1,0 +1,529 @@
+openapi: 3.0.3
+info:
+    title: "PavlovTV API"
+    description: "API Specifications for the local webserver that accompanies PavlovTV"
+    version: "0.1.0"
+paths:
+    /MatchStatus:
+        get:
+            tags: [GET]
+            summary: "Check the status of the currently loaded match"
+            description: "Returns information such as match time, teams if applicable, etc."
+            operationId: "MatchStatus"
+            responses:
+                "200":
+                    description: "successfully reetireved match status"
+                    content:
+                        application/json: 
+                          schema: 
+                            $ref: "#/components/schemas/MatchStatus"
+    /Killfeed:
+        get:
+            tags: [GET]
+            summary: "Get the current killfeed"
+            description: "Returns all killfeed events with weapon, players, and headshot"
+            operationId: "Killfeed"
+            responses:
+                "200":
+                    description: "successfully retrieved killfeed"
+                    content:
+                        application/json: 
+                          schema:
+                            type: array
+                            items:
+                                $ref: "#/components/schemas/Kill"
+    /MatchEvents:
+        get:
+            tags: [GET]
+            summary: "Get all match events"
+            description: "Returns all match events that occurred in the match"
+            operationId: "MatchEvents"
+            responses:
+                "200":
+                    description: "Successfully retrieved match data"
+                    content:
+                        application/json: 
+                            schema:
+                                $ref: "#/components/schemas/MatchEvents"
+    /Camera/Path/{camId}:
+        get:
+            tags: [GET]
+            summary: "Get path info for camera"
+            description: "Returns path info in the form of an array of positions with times"
+            operationId: "CamPathGet"
+            parameters:
+              - name: camId
+                in: path
+                description: ID of camera to return
+                required: true
+                schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: "Successfully retrieved camera path data"
+                    content:
+                        application/json: 
+                          schema:
+                            $ref: "#/components/schemas/CameraPath"
+        post:
+            tags: [POST]
+            summary: "Get path info for camera"
+            description: "Sets path info for the specified camera"
+            operationId: "CamPathPost"
+            parameters:
+              - name: camId
+                in: path
+                description: ID of camera to return
+                required: true
+                schema:
+                    type: integer
+                    format: int32
+            requestBody:
+                description: "Data to overwrite a camera path with"
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/CameraPath"
+            responses:
+                "200":
+                    description: "Successfully set camera path"
+                "400":
+                    description: "Error in data provided"
+    /Pause:
+        get:
+            tags: [GET]
+            summary: "Returns if the player is currently paused"
+            description: "Returns if the player is currently paused"
+            operationId: "PauseGet"
+            responses:
+                "200":
+                    description: "Successfully returned paused data"
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    Paused:
+                                        type: boolean
+        post:
+            tags: [POST]
+            summary: "Sets the pause state of the player"
+            description: "Sets the pause state of the player"
+            operationId: "PausePost"
+            requestBody:
+                description: "Whether to pause player or not"
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                Paused:
+                                    type: boolean
+            responses:
+                "200":
+                    description: "Successfully returned paused data"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/apiResponse"
+    /MatchTime:
+        get:
+            tags: [GET]
+            summary: "Returns current match time"
+            description: "Returns current match time"
+            operationId: "MatchTimeGet"
+            responses:
+                "200":
+                    description: "Successfully returned match time data"
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    MatchTime:
+                                        type: number
+                                        format: double
+                                        example: 743.8695068359375
+        post:
+            tags: [POST]
+            summary: "Sets the match time in the player"
+            description: "Sets the match time in the player"
+            operationId: "MatchTimePost"
+            requestBody:
+                description: "Time to set match to"
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                MatchTime:
+                                    type: number
+                                    format: double
+                                    example: 743.8695068359375
+            responses:
+                "200":
+                    description: "Successfully set match time"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/apiResponse"
+    /ReplayList:
+        get:
+            tags: [GET]
+            summary: "Gets a list of availiable replays"
+            description: "Returns a list of available replays along with some basic info"
+            operationId: "ReplayList"
+            responses:
+                "200":
+                    description: "Successfully retrieved list of available replays"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/ReplayList"
+    /LoadReplay:
+        post:
+            tags: [POST]
+            summary: "Loads a replay in the player"
+            description: "Loads the replay corresponding to the id provided"
+            operationId: "LoadReplay"
+            requestBody:
+                description: "Time to set match to"
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                Id:
+                                    type: string
+            responses:
+                "200":
+                    description: "Successfully loaded the replay"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/apiResponse"
+    /PlayersPos:
+        get:
+            tags: [GET]
+            summary: "Gets position data for all players"
+            description: "Returns position data including look direction, and bomb position if applicable"
+            operationId: "PlayersPos"
+            responses:
+                "200":
+                    description: "Successfully retrieved all position data"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/PlayersPos"
+components:
+    schemas:
+        PlayersPos:
+            type: object
+            properties:
+                Players:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            Name:
+                                type: string
+                                example: "Parl4224h"
+                            TeamId:
+                                type: integer
+                                format: int32
+                                example: 0
+                            X:
+                                type: number
+                                format: double
+                                example: 9170.8956521356595
+                            Y:
+                                type: number
+                                format: double
+                                example: 1080.3925747653223
+                            Z:
+                                type: number
+                                format: double
+                                example: 3920.3188734604901
+                            Yaw:
+                                type: number
+                                format: double
+                                example: -34.825001001358061
+                CameraX:
+                    type: number
+                    format: double
+                    example: 9170.8956521356595
+                CameraY:
+                    type: number
+                    format: double
+                    example: 1080.3925747653223
+                CameraZ:
+                    type: number
+                    format: double
+                    example: 3920.3188734604901
+                CameraYaw:
+                    type: number
+                    format: double
+                    example: -34.825001001358061
+                BombX:
+                    type: number
+                    format: double
+                    example: 9170.8956521356595
+                BombY:
+                    type: number
+                    format: double
+                    example: 1080.3925747653223
+                BombZ:
+                    type: number
+                    format: double
+                    example: 3920.3188734604901
+                BombState:
+                    type: integer
+                    format: int32
+                    example: 0
+                    description: "0 = dropped, 1 = carried, 2 = planted"
+        ReplayList:
+            type: object
+            properties:
+                Replays:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            Id:
+                                type: string
+                                example: "Stockpile-SND-2024.11.24-00.58.32"
+                            Name:
+                                type: string
+                                example: "Stockpile"
+                            GameMode:
+                                type: string
+                                example: "SND"
+                            TimeStamp:
+                                type: string
+                                example: "2024-11-24T00:58:32.098Z"
+                            Shack:
+                                type: boolean
+                            LocalReplay:
+                                type: boolean
+                            Live:
+                                type: boolean
+                                example: false
+        apiResponse:
+            type: object
+            properties:
+                Successful:
+                    type: boolean
+                Reason:
+                    type: string
+                    description: "Will only exist if successful is false"
+        CameraPath:
+            type: object
+            properties:
+                MapName:
+                    type: string
+                    example: "Stockpile"
+                MapId:
+                    type: string
+                    example: "UGC4397184"
+                PathNumber:
+                    type: integer
+                    format: int32
+                    example: 0
+                Points:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/CameraPathPoint"
+        CameraPathPoint:
+            type: object
+            properties:
+                Time:
+                    type: number
+                    format: double
+                    example: 0.0
+                X:
+                    type: number
+                    format: double
+                    example: 9170.8956521356595
+                Y:
+                    type: number
+                    format: double
+                    example: 1080.3925747653223
+                Z:
+                    type: number
+                    format: double
+                    example: 3920.3188734604901
+                Pitch:
+                    type: number
+                    format: double
+                    example: -34.825001001358061
+                Yaw:
+                    type: number
+                    format: double
+                    example: -166.59328386187553
+                Roll:
+                    type: number
+                    format: double
+                    example: 9.6861806954406078e-16
+        MatchEvents:
+            type: object
+            properties:
+                MatchTime:
+                    type: number
+                    format: double
+                    example: 137.369873046875
+                TotalTime:
+                    type: number
+                    format: double
+                    example: 383.4320068359375
+                Events:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/MatchEvent"
+        MatchEvent:
+            type: object
+            properties:
+                Name:
+                    type: string
+                    example: "Start"
+                Time:
+                    type: integer
+                    format: int32
+                    example: 35
+                AdditionalData:
+                    type: integer
+                    format: int32
+                    example: 1
+                    description: "Win Event: 0 = Team0 victory, 1 = Team1 victory; Round Event: round number; Planted: always 0"
+        Kill:
+            type: object
+            properties:
+                Killer:
+                    type: string
+                    example: "Jared"
+                Killfeed:
+                    type: string
+                    example: "Parl4224h"
+                Headshot:
+                    type: boolean
+                    example: true
+                EntryLifespan:
+                    type: number
+                    format: double
+                    example: 3.2541036605834961
+                KilledBy:
+                    type: string
+                    example: "Tokarev"
+                KillerTeam:
+                    type: integer
+                    format: int32
+                    example: 0
+                KilledTeam:
+                    type: integer
+                    format: int32
+                    example: 1
+        Player:
+            type: object
+            properties:
+                Name:
+                    type: string
+                    example: "Parl4224h"
+                Cash:
+                    type: integer
+                    format: int32
+                    example: 4000
+                Score:
+                    type: integer
+                    format: int32
+                    example: 30
+                Kills:
+                    type: integer
+                    format: int32
+                    example: 13
+                Deaths:
+                    type: integer
+                    format: int32
+                    example: 8
+                Dead:
+                    type: boolean
+                    example: false
+                Health:
+                    type: integer
+                    format: int32
+                    example: 100
+                Armour:
+                    type: integer
+                    format: int32
+                    example: 100
+                Helmet:
+                    type: boolean
+                    example: true
+                PrimaryWeapon:
+                    type: string
+                    example: "https://test-pav-tv.vankrupt.net/icons/ak47.png"
+                SecondaryWeapons:
+                    type: array
+                    example: [
+                        "https://test-pav-tv.vankrupt.net/icons/Knife.png",
+                        "https://test-pav-tv.vankrupt.net/icons/smoke_ru.png",
+                        "https://test-pav-tv.vankrupt.net/icons/sndbomb.png"]
+                    items:
+                        type: string
+                Avatar:
+                    type: string
+                    example: "http://prod.cdn.pavlov-vr.com/avatar/0002e11da25c46238489e49c86f92c19.png"
+                Bot:
+                    type: boolean
+                    example: false
+        MatchStatus:
+            type: object
+            properties:
+                MatchActive:
+                    type: boolean
+                    example: true
+                MapName:
+                    type: string
+                    example: "Oilrig"
+                RoundState:
+                    type: string
+                    example: "Playing Round"
+                RoundTime:
+                    type: integer
+                    format: int32
+                    example: 97
+                Teams:
+                    type: boolean
+                    example: true
+                RoundsLeft:
+                    type: integer
+                    format: int32
+                    example: 4
+                Team0Score:
+                    type: integer
+                    format: int32
+                    example: 7
+                Team1Score:
+                    type: integer
+                    format: int32
+                    example: 8
+                AttackingTeamId:
+                    type: integer
+                    format: int32
+                    example: 0
+                Team0:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Player"
+                Team0Cash:
+                    type: integer
+                    format: int32
+                    example: 4000
+                Team1:
+                    type: array
+                    items:
+                        $ref: "#/components/schemas/Player"
+                Team1Cash:
+                    type: integer
+                    format: int32
+                    example: 4000
+
