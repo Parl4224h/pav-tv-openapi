@@ -1,56 +1,59 @@
 openapi: 3.0.3
 info:
-    title: "PavlovTV API"
-    description: "API Specifications for the local webserver that accompanies PavlovTV"
-    version: "0.1.0"
+    title: PavlovTV API
+    description: API Specifications for the local webserver that accompanies PavlovTV
+    version: 0.1.0
+    x-logo:
+        url: 'https://github.com/Parl4224h/pav-tv-openapi/blob/main/logo.jpg?raw=true'
+        altText: PavlovTV logo
 paths:
     /MatchStatus:
         get:
             tags: [GET]
-            summary: "Check the status of the currently loaded match"
-            description: "Returns information such as match time, teams if applicable, etc."
-            operationId: "MatchStatus"
+            summary: Check the status of the currently loaded match
+            description: Returns information such as match time, teams if applicable, etc.
+            operationId: MatchStatus
             responses:
-                "200":
-                    description: "successfully reetireved match status"
+                200:
+                    description: successfully retrieved match status
                     content:
                         application/json: 
                           schema: 
-                            $ref: "#/components/schemas/MatchStatus"
+                            $ref: '#/components/schemas/MatchStatus'
     /Killfeed:
         get:
             tags: [GET]
-            summary: "Get the current killfeed"
-            description: "Returns all killfeed events with weapon, players, and headshot"
-            operationId: "Killfeed"
+            summary: Get the current killfeed
+            description: Returns all killfeed events with weapon, players, and headshot
+            operationId: Killfeed
             responses:
-                "200":
-                    description: "successfully retrieved killfeed"
+                200:
+                    description: successfully retrieved killfeed
                     content:
                         application/json: 
                           schema:
                             type: array
                             items:
-                                $ref: "#/components/schemas/Kill"
+                                $ref: '#/components/schemas/Kill'
     /MatchEvents:
         get:
             tags: [GET]
-            summary: "Get all match events"
-            description: "Returns all match events that occurred in the match"
-            operationId: "MatchEvents"
+            summary: Get all match events
+            description: Returns all match events that occurred in the match
+            operationId: MatchEvents
             responses:
-                "200":
-                    description: "Successfully retrieved match data"
+                200:
+                    description: Successfully retrieved match data
                     content:
                         application/json: 
                             schema:
-                                $ref: "#/components/schemas/MatchEvents"
+                                $ref: '#/components/schemas/MatchEvents'
     /Camera/Path/{camId}:
         get:
             tags: [GET]
-            summary: "Get path info for camera"
-            description: "Returns path info in the form of an array of positions with times"
-            operationId: "CamPathGet"
+            summary: Get path info for camera
+            description: Returns path info in the form of an array of positions with times
+            operationId: CamPathGet
             parameters:
               - name: camId
                 in: path
@@ -60,17 +63,17 @@ paths:
                     type: integer
                     format: int32
             responses:
-                "200":
-                    description: "Successfully retrieved camera path data"
+                200:
+                    description: Successfully retrieved camera path data
                     content:
                         application/json: 
                           schema:
-                            $ref: "#/components/schemas/CameraPath"
+                            $ref: '#/components/schemas/CameraPath'
         post:
             tags: [POST]
-            summary: "Get path info for camera"
-            description: "Sets path info for the specified camera"
-            operationId: "CamPathPost"
+            summary: Get path info for camera
+            description: Sets path info for the specified camera
+            operationId: CamPathPost
             parameters:
               - name: camId
                 in: path
@@ -80,25 +83,25 @@ paths:
                     type: integer
                     format: int32
             requestBody:
-                description: "Data to overwrite a camera path with"
+                description: Data to overwrite a camera path with
                 content:
                     application/json:
                         schema:
-                            $ref: "#/components/schemas/CameraPath"
+                            $ref: '#/components/schemas/CameraPath'
             responses:
-                "200":
-                    description: "Successfully set camera path"
-                "400":
-                    description: "Error in data provided"
+                200:
+                    description: Successfully set camera path
+                400:
+                    description: Error in data provided
     /Pause:
         get:
             tags: [GET]
-            summary: "Returns if the player is currently paused"
-            description: "Returns if the player is currently paused"
-            operationId: "PauseGet"
+            summary: Returns if the player is currently paused
+            description: Returns if the player is currently paused
+            operationId: PauseGet
             responses:
-                "200":
-                    description: "Successfully returned paused data"
+                200:
+                    description: Successfully returned paused data
                     content:
                         application/json:
                             schema:
@@ -108,11 +111,11 @@ paths:
                                         type: boolean
         post:
             tags: [POST]
-            summary: "Sets the pause state of the player"
-            description: "Sets the pause state of the player"
-            operationId: "PausePost"
+            summary: Sets the pause state of the player
+            description: Sets the pause state of the player
+            operationId: PausePost
             requestBody:
-                description: "Whether to pause player or not"
+                description: Whether to pause player or not
                 content:
                     application/json:
                         schema:
@@ -121,21 +124,21 @@ paths:
                                 Paused:
                                     type: boolean
             responses:
-                "200":
-                    description: "Successfully returned paused data"
+                200:
+                    description: Successfully returned paused data
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/apiResponse"
+                                $ref: '#/components/schemas/apiResponse'
     /MatchTime:
         get:
             tags: [GET]
-            summary: "Returns current match time"
-            description: "Returns current match time"
-            operationId: "MatchTimeGet"
+            summary: Returns current match time
+            description: Returns current match time
+            operationId: MatchTimeGet
             responses:
-                "200":
-                    description: "Successfully returned match time data"
+                200:
+                    description: Successfully returned match time data
                     content:
                         application/json:
                             schema:
@@ -147,11 +150,11 @@ paths:
                                         example: 743.8695068359375
         post:
             tags: [POST]
-            summary: "Sets the match time in the player"
-            description: "Sets the match time in the player"
-            operationId: "MatchTimePost"
+            summary: Sets the match time in the player
+            description: Sets the match time in the player
+            operationId: MatchTimePost
             requestBody:
-                description: "Time to set match to"
+                description: Time to set match to
                 content:
                     application/json:
                         schema:
@@ -162,33 +165,33 @@ paths:
                                     format: double
                                     example: 743.8695068359375
             responses:
-                "200":
-                    description: "Successfully set match time"
+                200:
+                    description: Successfully set match time
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/apiResponse"
+                                $ref: '#/components/schemas/apiResponse'
     /ReplayList:
         get:
             tags: [GET]
-            summary: "Gets a list of availiable replays"
-            description: "Returns a list of available replays along with some basic info"
-            operationId: "ReplayList"
+            summary: Gets a list of available replays
+            description: Returns a list of available replays along with some basic info
+            operationId: ReplayList
             responses:
-                "200":
-                    description: "Successfully retrieved list of available replays"
+                200:
+                    description: Successfully retrieved list of available replays
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/ReplayList"
+                                $ref: '#/components/schemas/ReplayList'
     /LoadReplay:
         post:
             tags: [POST]
-            summary: "Loads a replay in the player"
-            description: "Loads the replay corresponding to the id provided"
-            operationId: "LoadReplay"
+            summary: Loads a replay in the player
+            description: Loads the replay corresponding to the id provided
+            operationId: LoadReplay
             requestBody:
-                description: "Time to set match to"
+                description: Time to set match to
                 content:
                     application/json:
                         schema:
@@ -197,25 +200,25 @@ paths:
                                 Id:
                                     type: string
             responses:
-                "200":
-                    description: "Successfully loaded the replay"
+                200:
+                    description: Successfully loaded the replay
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/apiResponse"
+                                $ref: '#/components/schemas/apiResponse'
     /PlayersPos:
         get:
             tags: [GET]
-            summary: "Gets position data for all players"
-            description: "Returns position data including look direction, and bomb position if applicable"
-            operationId: "PlayersPos"
+            summary: Gets position data for all players
+            description: Returns position data including look direction, and bomb position if applicable
+            operationId: PlayersPos
             responses:
-                "200":
-                    description: "Successfully retrieved all position data"
+                200:
+                    description: Successfully retrieved all position data
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/PlayersPos"
+                                $ref: '#/components/schemas/PlayersPos'
 components:
     schemas:
         PlayersPos:
@@ -228,7 +231,7 @@ components:
                         properties:
                             Name:
                                 type: string
-                                example: "Parl4224h"
+                                example: Parl4224h
                             TeamId:
                                 type: integer
                                 format: int32
@@ -281,7 +284,7 @@ components:
                     type: integer
                     format: int32
                     example: 0
-                    description: "0 = dropped, 1 = carried, 2 = planted"
+                    description: 0 = dropped, 1 = carried, 2 = planted
         ReplayList:
             type: object
             properties:
@@ -292,16 +295,16 @@ components:
                         properties:
                             Id:
                                 type: string
-                                example: "Stockpile-SND-2024.11.24-00.58.32"
+                                example: Stockpile-SND-2024.11.24-00.58.32
                             Name:
                                 type: string
-                                example: "Stockpile"
+                                example: Stockpile
                             GameMode:
                                 type: string
-                                example: "SND"
+                                example: SND
                             TimeStamp:
                                 type: string
-                                example: "2024-11-24T00:58:32.098Z"
+                                example: 2024-11-24T00:58:32.098Z
                             Shack:
                                 type: boolean
                             LocalReplay:
@@ -316,16 +319,16 @@ components:
                     type: boolean
                 Reason:
                     type: string
-                    description: "Will only exist if successful is false"
+                    description: Will only exist if successful is false
         CameraPath:
             type: object
             properties:
                 MapName:
                     type: string
-                    example: "Stockpile"
+                    example: Stockpile
                 MapId:
                     type: string
-                    example: "UGC4397184"
+                    example: UGC4397184
                 PathNumber:
                     type: integer
                     format: int32
@@ -333,7 +336,7 @@ components:
                 Points:
                     type: array
                     items:
-                        $ref: "#/components/schemas/CameraPathPoint"
+                        $ref: '#/components/schemas/CameraPathPoint'
         CameraPathPoint:
             type: object
             properties:
@@ -379,13 +382,13 @@ components:
                 Events:
                     type: array
                     items:
-                        $ref: "#/components/schemas/MatchEvent"
+                        $ref: '#/components/schemas/MatchEvent'
         MatchEvent:
             type: object
             properties:
                 Name:
                     type: string
-                    example: "Start"
+                    example: Start
                 Time:
                     type: integer
                     format: int32
@@ -400,10 +403,10 @@ components:
             properties:
                 Killer:
                     type: string
-                    example: "Jared"
+                    example: Jared
                 Killfeed:
                     type: string
-                    example: "Parl4224h"
+                    example: Parl4224h
                 Headshot:
                     type: boolean
                     example: true
@@ -413,7 +416,7 @@ components:
                     example: 3.2541036605834961
                 KilledBy:
                     type: string
-                    example: "Tokarev"
+                    example: Tokarev
                 KillerTeam:
                     type: integer
                     format: int32
@@ -427,7 +430,7 @@ components:
             properties:
                 Name:
                     type: string
-                    example: "Parl4224h"
+                    example: Parl4224h
                 Cash:
                     type: integer
                     format: int32
@@ -460,18 +463,18 @@ components:
                     example: true
                 PrimaryWeapon:
                     type: string
-                    example: "https://test-pav-tv.vankrupt.net/icons/ak47.png"
+                    example: 'https://test-pav-tv.vankrupt.net/icons/ak47.png'
                 SecondaryWeapons:
                     type: array
                     example: [
-                        "https://test-pav-tv.vankrupt.net/icons/Knife.png",
-                        "https://test-pav-tv.vankrupt.net/icons/smoke_ru.png",
-                        "https://test-pav-tv.vankrupt.net/icons/sndbomb.png"]
+                        'https://test-pav-tv.vankrupt.net/icons/Knife.png',
+                        'https://test-pav-tv.vankrupt.net/icons/smoke_ru.png',
+                        'https://test-pav-tv.vankrupt.net/icons/sndbomb.png']
                     items:
                         type: string
                 Avatar:
                     type: string
-                    example: "http://prod.cdn.pavlov-vr.com/avatar/0002e11da25c46238489e49c86f92c19.png"
+                    example: 'http://prod.cdn.pavlov-vr.com/avatar/0002e11da25c46238489e49c86f92c19.png'
                 Bot:
                     type: boolean
                     example: false
@@ -483,10 +486,10 @@ components:
                     example: true
                 MapName:
                     type: string
-                    example: "Oilrig"
+                    example: Oilrig
                 RoundState:
                     type: string
-                    example: "Playing Round"
+                    example: Playing Round
                 RoundTime:
                     type: integer
                     format: int32
@@ -513,7 +516,7 @@ components:
                 Team0:
                     type: array
                     items:
-                        $ref: "#/components/schemas/Player"
+                        $ref: '#/components/schemas/Player'
                 Team0Cash:
                     type: integer
                     format: int32
@@ -521,9 +524,8 @@ components:
                 Team1:
                     type: array
                     items:
-                        $ref: "#/components/schemas/Player"
+                        $ref: '#/components/schemas/Player'
                 Team1Cash:
                     type: integer
                     format: int32
                     example: 4000
-
