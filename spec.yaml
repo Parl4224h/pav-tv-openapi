@@ -404,7 +404,7 @@ components:
                 Killer:
                     type: string
                     example: Jared
-                Killfeed:
+                Killed:
                     type: string
                     example: Parl4224h
                 Headshot:
